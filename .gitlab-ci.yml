@@ -11,11 +11,11 @@ deploy:deploy-rnode-artifacts:
     - mkdir -p ~/.ssh
     - echo "${SSH_PRIVATE_KEY}" | tr -d '\r' > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
-	- ssh -p 22 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null inbound@dispatch.rchain.coop pwd 
-	- ./scripts/install_bnfc.sh
-	# build rosette 
-	cd rchain/rosette
-	./build.sh
+    - ssh -p 22 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null inbound@dispatch.rchain.coop pwd 
+    - ./scripts/install_bnfc.sh
+    # build rosette 
+    - cd rchain/rosette
+    - ./build.sh
     # build deb/rpm packages and compressed archive 
     - sudo sbt -Dsbt.log.noformat=true clean rholang/bnfc:generate node/rpm:packageBin node/debian:packageBin node/universal:packageZipTarball 
     - set -eo pipefail
@@ -23,7 +23,7 @@ deploy:deploy-rnode-artifacts:
     - cp node/target/rnode_*_all.deb ${artifacts_dir}/rnode.deb
     - cp node/target/rpm/RPMS/noarch/rnode-*.noarch.rpm ${artifacts_dir}/rnode.rpm
     - cp rosette/build.out/rosette-*.deb ${artifacts_dir}/rosette.deb
-	# deploy to dispatcher 
+    # deploy to dispatcher 
     - rsync -avrz --delete -e  "ssh -p 22 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" ${artifacts_dir}/* inbound@dispatch.rchain.coop:/home/inbound/cd/artifacts/${CI_COMMIT_REF_NAME}/
   only:
     - master
