@@ -47,4 +47,4 @@ deploy:deploy-rnode-artifacts:
   only:
     - master
     - dev
-    - gitlab-test
+    - test-gitlab-deploy
