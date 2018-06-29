@@ -11,7 +11,7 @@ deploy:deploy-rnode-artifacts:
     - mkdir -p ~/.ssh
     - echo "${SSH_PRIVATE_KEY}" | tr -d '\r' > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
-    - ssh -p 22 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null inbound@dispatch.rchain.coop pwd 
+    - ssh -p 22 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null inbound@dispatch.pyr8.io pwd 
     - ./scripts/install_bnfc.sh
     # build rosette 
     - cd rchain/rosette
@@ -24,7 +24,7 @@ deploy:deploy-rnode-artifacts:
     - cp node/target/rpm/RPMS/noarch/rnode-*.noarch.rpm ${artifacts_dir}/rnode.rpm
     - cp rosette/build.out/rosette-*.deb ${artifacts_dir}/rosette.deb
     # deploy to dispatcher 
-    - rsync -avrz --delete -e  "ssh -p 22 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" ${artifacts_dir}/* inbound@dispatch.rchain.coop:/home/inbound/cd/artifacts/${CI_COMMIT_REF_NAME}/
+    - rsync -avrz --delete -e  "ssh -p 22 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" ${artifacts_dir}/* inbound@dispatch.pyr8.io:/home/inbound/cd/artifacts/${CI_COMMIT_REF_NAME}/
   only:
     - master
     - dev
